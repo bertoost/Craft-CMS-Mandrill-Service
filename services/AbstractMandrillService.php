@@ -87,8 +87,7 @@ abstract class AbstractMandrillService extends BaseApplicationComponent
 
             try {
                 $this->contentVariables = $event->params['variables'];
-var_dump($this->contentVariables);
-exit;
+
                 // convert EmailModel to our Mandrill_MessageModel
                 $this->message->convertFromEmailModel($this->emailModel);
 
