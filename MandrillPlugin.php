@@ -75,7 +75,9 @@ class MandrillPlugin extends BasePlugin
                 if (!isset($event->params['_mandrill'])) {
 
                     craft()->mandrill
+                        ->setEmailModel($event->params['emailModel'])
                         ->setUser($event->params['user'])
+                        ->setContentVariables($event->params['variables'])
                         ->send();
 
                     // stop any 'normal' mail from being send by Craft

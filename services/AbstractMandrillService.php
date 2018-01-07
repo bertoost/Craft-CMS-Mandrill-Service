@@ -69,6 +69,32 @@ abstract class AbstractMandrillService extends BaseApplicationComponent
     }
 
     /**
+     * Override the initialized EmailModel
+     *
+     * @param EmailModel $emailModel
+     *
+     * @return $this
+     */
+    public function setEmailModel(EmailModel $emailModel)
+    {
+        $this->emailModel = $emailModel;
+
+        return $this;
+    }
+
+    /**
+     * @param array $contentVariables
+     *
+     * @return AbstractMandrillService
+     */
+    public function setContentVariables(array $contentVariables)
+    {
+        $this->contentVariables = $contentVariables;
+
+        return $this;
+    }
+
+    /**
      * @return boolean
      */
     public function send()
