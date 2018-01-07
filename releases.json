@@ -1,5 +1,13 @@
 [
   {
+    "version": "1.0.2",
+    "downloadUrl": "https://github.com/bertoost/Craft-CMS-Mandrill-Service/archive/1.0.2.zip",
+    "date": "2018-01-07T17:25:00+01:00",
+    "notes": [
+      "[Fixed] Removed debug dump from Mandrill service."
+    ]
+  },
+  {
     "version": "1.0.1",
     "downloadUrl": "https://github.com/bertoost/Craft-CMS-Mandrill-Service/archive/1.0.1.zip",
     "date": "2018-01-07T16:38:00+01:00",
