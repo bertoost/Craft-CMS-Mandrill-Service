@@ -1,0 +1,15 @@
+{
+  "name": "bertoost/craft-mandrill-service-plugin",
+  "description": "Mandrill service plugin for Craft CMS (v2)",
+  "type": "craft-plugin",
+  "authors": [
+    {
+      "name": "Bert Oost",
+      "email": "hello@bertoost.com"
+    }
+  ],
+  "require": {
+    "composer/installers": "~1.0",
+    "mandrill/mandrill": "^1.0"
+  }
+}
