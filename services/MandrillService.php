@@ -81,7 +81,6 @@ class MandrillService extends AbstractMandrillService
         $this->emailModel->htmlBody = $message->htmlBody;
         $this->emailModel->body = $message->body;
 
-        $variables['emailKey'] = $key;
         $this->contentVariables = $variables;
 
         return $this;
