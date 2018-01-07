@@ -178,28 +178,33 @@ abstract class AbstractMandrillService extends BaseApplicationComponent
         $templatesService = craft()->templates;
         $oldTemplateMode = $templatesService->getTemplateMode();
 
-        if (craft()->getEdition() >= Craft::Client) {
+        // run parser only when nog coming from Craft's messages service
+        // since the message service is already parsing the html body
+        if (!isset($this->contentVariables['emailKey'])) {
 
-            // is there a custom HTML template set?
-            $settings = craft()->email->getSettings();
-            if (!empty($settings['template'])) {
+            if (craft()->getEdition() >= Craft::Client) {
 
-                $templatesService->setTemplateMode(TemplateMode::Site);
-                $template = $settings['template'];
+                // is there a custom HTML template set?
+                $settings = craft()->email->getSettings();
+                if (!empty($settings['template'])) {
+
+                    $templatesService->setTemplateMode(TemplateMode::Site);
+                    $template = $settings['template'];
+                }
             }
+
+            if (empty($template)) {
+
+                // default to the _special/email.html template
+                $templatesService->setTemplateMode(TemplateMode::CP);
+                $template = '_special/email';
+            }
+
+            $this->message->html = "{% extends '{$template}' %}\n" .
+                "{% set body %}\n" .
+                $this->message->html .
+                "{% endset %}\n";
         }
-
-        if (empty($template)) {
-
-            // default to the _special/email.html template
-            $templatesService->setTemplateMode(TemplateMode::CP);
-            $template = '_special/email';
-        }
-
-        $this->message->html = "{% extends '{$template}' %}\n" .
-            "{% set body %}\n" .
-            $this->message->html .
-            "{% endset %}\n";
 
         // render html body
         $this->message->html = craft()->templates->renderString($this->message->html, $this->contentVariables);
