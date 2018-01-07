@@ -1,5 +1,15 @@
 [
   {
+    "version": "1.0.3",
+    "downloadUrl": "https://github.com/bertoost/Craft-CMS-Mandrill-Service/archive/1.0.3.zip",
+    "date": "2018-01-07T18:20:00+01:00",
+    "notes": [
+      "[Fixed] Double rendering Twig template when using email messages system.",
+      "[Fixed] Overriding and setting user to send message to from event.",
+      "[Fixed] Overriding and setting email model from event."
+    ]
+  },
+  {
     "version": "1.0.2",
     "downloadUrl": "https://github.com/bertoost/Craft-CMS-Mandrill-Service/archive/1.0.2.zip",
     "date": "2018-01-07T17:25:00+01:00",
