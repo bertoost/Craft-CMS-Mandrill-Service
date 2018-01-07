@@ -112,7 +112,9 @@ abstract class AbstractMandrillService extends BaseApplicationComponent
         if ($event->performAction) {
 
             try {
+                // in case a plugin changed any variables in onBeforeSendEmail
                 $this->contentVariables = $event->params['variables'];
+                $this->contentVariables['user'] = $this->user;
 
                 // convert EmailModel to our Mandrill_MessageModel
                 $this->message->convertFromEmailModel($this->emailModel);
