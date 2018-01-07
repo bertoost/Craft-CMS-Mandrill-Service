@@ -2,6 +2,9 @@
   "name": "bertoost/craft-mandrill-service-plugin",
   "description": "Mandrill service plugin for Craft CMS (v2)",
   "type": "craft-plugin",
+  "extra": {
+    "installer-name": "mandrill"
+  },
   "authors": [
     {
       "name": "Bert Oost",
