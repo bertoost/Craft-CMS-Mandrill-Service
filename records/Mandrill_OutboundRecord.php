@@ -22,12 +22,12 @@ class Mandrill_OutboundRecord extends BaseRecord
     {
         return [
             'messageId' => [AttributeType::String, 'required' => true],
-            'sender'    => [AttributeType::String, 'required' => true],
-            'subject'   => [AttributeType::String, 'required' => true],
+            'sender'    => [AttributeType::String, 'required' => false],
+            'subject'   => [AttributeType::String, 'required' => false],
             'to'        => [AttributeType::String, 'required' => true],
-            'opens'     => [AttributeType::Number, 'required' => true, 'default' => 0],
-            'clicks'    => [AttributeType::Number, 'required' => true, 'default' => 0],
-            'state'     => [AttributeType::String, 'required' => true, 'default' => 'sent'],
+            'opens'     => [AttributeType::Number, 'required' => false, 'default' => 0],
+            'clicks'    => [AttributeType::Number, 'required' => false, 'default' => 0],
+            'state'     => [AttributeType::String, 'required' => false, 'default' => 'sent'],
         ];
     }
 

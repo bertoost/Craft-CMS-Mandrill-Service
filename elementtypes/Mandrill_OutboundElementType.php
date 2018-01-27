@@ -29,7 +29,7 @@ class Mandrill_OutboundElementType extends BaseElementType
     public function getSources($context = null)
     {
         $sources = [
-            '*'        => [
+            '*' => [
                 'label' => Craft::t('All outbound'),
             ],
 //            '---'      => [
@@ -46,8 +46,8 @@ class Mandrill_OutboundElementType extends BaseElementType
     public function getDefaultTableAttributes($source = null)
     {
         $attributes = [
-            'sender',
             'subject',
+            'sender',
             'to',
             'opens',
             'clicks',
@@ -63,7 +63,8 @@ class Mandrill_OutboundElementType extends BaseElementType
     public function defineCriteriaAttributes()
     {
         return [
-            'to' => AttributeType::String,
+            'messageId' => AttributeType::Number,
+            'to'        => AttributeType::String,
         ];
     }
 
@@ -74,8 +75,8 @@ class Mandrill_OutboundElementType extends BaseElementType
     {
         $attributes = [
             'messageId' => ['label' => Craft::t('Message Id')],
-            'sender'    => ['label' => Craft::t('Sender')],
             'subject'   => ['label' => Craft::t('Subject')],
+            'sender'    => ['label' => Craft::t('Sender')],
             'to'        => ['label' => Craft::t('To')],
             'opens'     => ['label' => Craft::t('Opens')],
             'clicks'    => ['label' => Craft::t('Clicks')],
@@ -102,6 +103,10 @@ class Mandrill_OutboundElementType extends BaseElementType
 
         if (!empty($criteria->search)) {
             $query->andWhere(DbHelper::parseParam('outbound.to', $criteria->search, $query->params));
+        }
+
+        if (!empty($criteria->messageId)) {
+            $query->andWhere(DbHelper::parseParam('outbound.messageId', $criteria->messageId, $query->params));
         }
     }
 

@@ -52,16 +52,20 @@ abstract class AbstractMandrillService extends BaseApplicationComponent
         $this->config = craft()->plugins->getPlugin('mandrill')->getSettings();
 
         $apiKey = $this->config->apiKey;
+        if (null !== ($configApiKey = craft()->config->get('apiKey', 'mandrill'))) {
+            $apiKey = $configApiKey;
+        }
         if (null !== ($configApiKey = craft()->config->get('mandrillApiKey'))) {
             $apiKey = $configApiKey;
         }
 
-        if (!empty($apiKey)) {
-
-            $this->mandrill = new \Mandrill($apiKey);
-
-            $this->initMessage();
+        if (empty($apiKey)) {
+            throw new \Exception('Could not initialize Mandrill. No API key set.');
         }
+
+        $this->mandrill = new \Mandrill($apiKey);
+
+        $this->initMessage();
     }
 
     /**

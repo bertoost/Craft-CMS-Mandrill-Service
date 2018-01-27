@@ -28,7 +28,7 @@ class MandrillPlugin extends BasePlugin
      */
     public function getSchemaVersion()
     {
-        return '0.0.1';
+        return '0.0.2';
     }
 
     /**
@@ -81,7 +81,7 @@ class MandrillPlugin extends BasePlugin
         }
 
         $settings = $this->getSettings();
-        $configEnabled = (boolean)craft()->config->get('mandrillEnabled');
+        $configEnabled = (boolean) craft()->config->get('mandrillEnabled');
 
         if ($settings->enabled || $configEnabled) {
 
@@ -151,11 +151,11 @@ class MandrillPlugin extends BasePlugin
     protected function defineSettings()
     {
         return [
-            'enabled'          => AttributeType::Bool,
-            'apiKey'           => AttributeType::String,
-            'fromEmail'        => AttributeType::String,
-            'fromName'         => [AttributeType::String, 'default' => craft()->getSiteName()],
-            'lastSyncDateTime' => [AttributeType::DateTime],
+            'enabled'      => AttributeType::Bool,
+            'apiKey'       => AttributeType::String,
+            'fromEmail'    => AttributeType::String,
+            'fromName'     => [AttributeType::String, 'default' => craft()->getSiteName()],
+            'lastSyncDate' => [AttributeType::DateTime, 'default' => new DateTime()],
         ];
     }
 

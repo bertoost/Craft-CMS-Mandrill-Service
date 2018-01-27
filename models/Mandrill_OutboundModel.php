@@ -5,7 +5,7 @@ namespace Craft;
 /**
  * Class Mandrill_OutboundModel
  */
-class Mandrill_OutboundModel extends BaseModel
+class Mandrill_OutboundModel extends BaseElementModel
 {
     protected $elementType = MandrillModel::ElementTypeOutbound;
 
