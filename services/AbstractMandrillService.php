@@ -38,6 +38,11 @@ abstract class AbstractMandrillService extends BaseApplicationComponent
     public $message;
 
     /**
+     * @var DateTime|null
+     */
+    public $sentAt;
+
+    /**
      * {@inheritdoc}
      */
     public function init()
@@ -123,7 +128,8 @@ abstract class AbstractMandrillService extends BaseApplicationComponent
                 $this->renderHtmlContent();
 
                 // actually send message to mandrill
-                $result = $this->mandrill->messages->send($this->message->getAttributes());
+                $sentAt = $this->getSentAt($event->params);
+                $result = $this->mandrill->messages->send($this->message->getAttributes(), false, null, $sentAt);
 
                 // capture errors
                 if (in_array($result[0]['status'], ['rejected', 'invalid'])) {
@@ -216,5 +222,32 @@ abstract class AbstractMandrillService extends BaseApplicationComponent
 
         // return to the original template mode
         $templatesService->setTemplateMode($oldTemplateMode);
+    }
+
+    /**
+     * @param DateTime|null $dateTime
+     *
+     * @return $this
+     */
+    public function setSentAt(DateTime $dateTime = null)
+    {
+        $this->sentAt = $dateTime;
+
+        return $this;
+    }
+
+    /**
+     * @param array $eventParams
+     *
+     * @return DateTime|null
+     */
+    public function getSentAt(array $eventParams = [])
+    {
+        if (empty($this->sentAt) || !($this->sentAt instanceof DateTime)) {
+
+            $this->sentAt = (isset($eventParams['mandrillSentAt'])) ? $eventParams['mandrillSentAt']->format('Y-m-d H:i:s') : null;
+        }
+
+        return $this->sentAt;
     }
 }

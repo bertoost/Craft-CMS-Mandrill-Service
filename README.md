@@ -21,6 +21,7 @@ This plugin provides the ability to send emails via Mandrill API. It also can co
 - [Examples](#examples)
     - [Add-in tags](#add-in-tags)
     - [Using attachments](#using-attachments)
+    - [Set a schedule date/time](#set-a-schedule-datetime)
 
 <!-- /TOC -->
 
@@ -265,6 +266,35 @@ craft()->on('email.onBeforeSendEmail', function (Event $event) {
 
         $event->params['emailMessage']
             ->addAttachment('my.pdf', $fileContents, 'application/pdf');
+    }
+});
+```
+
+### Set a schedule date/time
+
+__When using service manually;__
+
+```php
+$dateTime = new DateTime();
+$dateTime->modify('+2 hours');
+
+craft()->mandrill
+    // ...
+    ->setSentAt($dateTime);
+```
+
+__When the "Mandrill as service" is on;__
+
+```php
+craft()->on('email.onBeforeSendEmail', function (Event $event) {
+
+    // to be sure it happens when Mandrill is here
+    if (isset($event->params['_mandrill'])) {
+
+        $dateTime = new DateTime();
+        $dateTime->modify('+2 hours');
+
+        $event->params['mandrillSentAt'] = $dateTime;
     }
 });
 ```
