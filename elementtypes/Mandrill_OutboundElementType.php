@@ -29,13 +29,48 @@ class Mandrill_OutboundElementType extends BaseElementType
     public function getSources($context = null)
     {
         $sources = [
-            '*' => [
+            '*'   => [
                 'label' => Craft::t('All outbound'),
-            ],
-//            '---'      => [
-//                'heading' => Craft::t('Filter invoices'),
-//            ],
+            ]
         ];
+
+        $stateTotals = craft()->mandrill_outbound->getTotalStates();
+        if (array_sum($stateTotals) > 0) {
+
+            $sources = array_merge($sources, [
+                'filter-state' => [
+                    'heading' => Craft::t('State filter'),
+                ],
+            ]);
+
+            foreach ($stateTotals as $stateName => $stateTotal) {
+                if ($stateTotal > 0) {
+
+                    $nested = [];
+                    if ($stateName === Mandrill_OutboundModel::STATE_REJECTED) {
+
+                        $rejectedTotals = craft()->mandrill_outbound->getRejectedTotals();
+                        foreach ($rejectedTotals as $rejectName => $rejectedTotal) {
+                            if ($rejectedTotal > 0) {
+                                $label = str_replace(['-','_'], ' ', $rejectName);
+                                $nested[$rejectName] = [
+                                    'label'    => Craft::t(ucfirst($label)),
+                                    'criteria' => ['rejectReason' => $rejectName],
+                                ];
+                            }
+                        }
+                    }
+
+                    $sources = array_merge($sources, [
+                        $stateName => [
+                            'label'    => Craft::t(ucfirst($stateName) . ' messages'),
+                            'criteria' => ['state' => $stateName],
+                            'nested'   => $nested,
+                        ],
+                    ]);
+                }
+            }
+        }
 
         return $sources;
     }
@@ -46,9 +81,8 @@ class Mandrill_OutboundElementType extends BaseElementType
     public function getDefaultTableAttributes($source = null)
     {
         $attributes = [
-            'subject',
-            'sender',
             'to',
+            'subject',
             'opens',
             'clicks',
             'state',
@@ -63,8 +97,10 @@ class Mandrill_OutboundElementType extends BaseElementType
     public function defineCriteriaAttributes()
     {
         return [
-            'messageId' => AttributeType::Number,
-            'to'        => AttributeType::String,
+            'to'           => AttributeType::String,
+            'messageId'    => AttributeType::String,
+            'sate'         => AttributeType::String,
+            'rejectReason' => AttributeType::String,
         ];
     }
 
@@ -74,13 +110,13 @@ class Mandrill_OutboundElementType extends BaseElementType
     public function defineAvailableTableAttributes()
     {
         $attributes = [
-            'messageId' => ['label' => Craft::t('Message Id')],
-            'subject'   => ['label' => Craft::t('Subject')],
-            'sender'    => ['label' => Craft::t('Sender')],
-            'to'        => ['label' => Craft::t('To')],
-            'opens'     => ['label' => Craft::t('Opens')],
-            'clicks'    => ['label' => Craft::t('Clicks')],
-            'state'     => ['label' => Craft::t('State')],
+            'to'           => ['label' => Craft::t('To')],
+            'sender'       => ['label' => Craft::t('Sender')],
+            'subject'      => ['label' => Craft::t('Subject')],
+            'opens'        => ['label' => Craft::t('Opens')],
+            'clicks'       => ['label' => Craft::t('Clicks')],
+            'state'        => ['label' => Craft::t('State')],
+            'rejectReason' => ['label' => Craft::t('Reject reason')],
         ];
 
         return $attributes;
@@ -98,7 +134,8 @@ class Mandrill_OutboundElementType extends BaseElementType
                            outbound.to,
                            outbound.opens,
                            outbound.clicks,
-                           outbound.state');
+                           outbound.state,
+                           outbound.rejectReason');
         $query->join('mandrill_outbound outbound', 'outbound.id = elements.id');
 
         if (!empty($criteria->search)) {
@@ -107,6 +144,14 @@ class Mandrill_OutboundElementType extends BaseElementType
 
         if (!empty($criteria->messageId)) {
             $query->andWhere(DbHelper::parseParam('outbound.messageId', $criteria->messageId, $query->params));
+        }
+
+        if (!empty($criteria->state)) {
+            $query->andWhere(DbHelper::parseParam('outbound.state', $criteria->state, $query->params));
+        }
+
+        if (!empty($criteria->rejectReason)) {
+            $query->andWhere(DbHelper::parseParam('outbound.rejectReason', $criteria->rejectReason, $query->params));
         }
     }
 
@@ -118,6 +163,33 @@ class Mandrill_OutboundElementType extends BaseElementType
         return [
             'to',
         ];
+    }
+
+    /**
+     * @param Mandrill_OutboundModel|BaseElementModel $element
+     * @param string $attribute
+     *
+     * @return mixed|string
+     */
+    public function getTableAttributeHtml(BaseElementModel $element, $attribute)
+    {
+        switch ($attribute) {
+            case 'state':
+                $state = $element->state;
+
+                if ($state === Mandrill_OutboundModel::STATE_REJECTED) {
+                    $state = [$state, $element->rejectReason];
+                }
+
+                $contents = craft()->templates->render('mandrill/_formats/state', [
+                    'state' => $state,
+                ]);
+
+                return $contents;
+                break;
+        }
+
+        return parent::getTableAttributeHtml($element, $attribute);
     }
 
     /**

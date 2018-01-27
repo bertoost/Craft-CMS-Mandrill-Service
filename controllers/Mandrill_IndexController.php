@@ -16,6 +16,8 @@ class Mandrill_IndexController extends BaseController
             'elementType' => MandrillModel::ElementTypeOutbound,
         ];
 
+        craft()->templates->includeCssResource('mandrill/css/style.css');
+
         $this->renderTemplate('mandrill/outbound/index', $variables);
     }
 }

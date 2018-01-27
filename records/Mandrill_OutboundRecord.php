@@ -21,13 +21,15 @@ class Mandrill_OutboundRecord extends BaseRecord
     public function defineAttributes()
     {
         return [
-            'messageId' => [AttributeType::String, 'required' => true],
-            'sender'    => [AttributeType::String, 'required' => false],
-            'subject'   => [AttributeType::String, 'required' => false],
-            'to'        => [AttributeType::String, 'required' => true],
-            'opens'     => [AttributeType::Number, 'required' => false, 'default' => 0],
-            'clicks'    => [AttributeType::Number, 'required' => false, 'default' => 0],
-            'state'     => [AttributeType::String, 'required' => false, 'default' => 'sent'],
+            'messageId'    => [AttributeType::String, 'required' => true],
+            'messageTs'    => [AttributeType::Number, 'required' => true],
+            'sender'       => [AttributeType::String, 'required' => false],
+            'subject'      => [AttributeType::String, 'required' => false],
+            'to'           => [AttributeType::String, 'required' => true],
+            'opens'        => [AttributeType::Number, 'required' => false, 'default' => 0],
+            'clicks'       => [AttributeType::Number, 'required' => false, 'default' => 0],
+            'state'        => [AttributeType::String, 'required' => false, 'default' => 'sent'],
+            'rejectReason' => [AttributeType::String, 'required' => false],
         ];
     }
 

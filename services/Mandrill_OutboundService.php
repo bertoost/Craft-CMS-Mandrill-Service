@@ -49,6 +49,58 @@ class Mandrill_OutboundService extends AbstractMandrillService
     }
 
     /**
+     * Returns a list of states with the number of found records
+     *
+     * @return array
+     * @throws Exception
+     */
+    public function getTotalStates()
+    {
+        $totals = [
+            Mandrill_OutboundModel::STATE_SENT      => 0,
+            Mandrill_OutboundModel::STATE_SCHEDULED => 0,
+            Mandrill_OutboundModel::STATE_QUEUED    => 0,
+            Mandrill_OutboundModel::STATE_BOUNCED   => 0,
+            Mandrill_OutboundModel::STATE_REJECTED  => 0,
+            Mandrill_OutboundModel::STATE_INVALID   => 0,
+        ];
+
+        foreach ($totals as $stateName => &$total) {
+            $total = $this->getCriteria(['state' => $stateName])->count();
+        }
+
+        return $totals;
+    }
+
+    /**
+     * Returns a list of states with the number of found records
+     *
+     * @return array
+     * @throws Exception
+     */
+    public function getRejectedTotals()
+    {
+        $totals = [
+            Mandrill_OutboundModel::REJECTED_HARD_BOUNCE    => 0,
+            Mandrill_OutboundModel::REJECTED_SOFT_BOUNCE    => 0,
+            Mandrill_OutboundModel::REJECTED_SPAM           => 0,
+            Mandrill_OutboundModel::REJECTED_UNSUBSCRIBE    => 0,
+            Mandrill_OutboundModel::REJECTED_CUSTOM         => 0,
+            Mandrill_OutboundModel::REJECTED_INVALID_SENDER => 0,
+            Mandrill_OutboundModel::REJECTED_INVALID        => 0,
+            Mandrill_OutboundModel::REJECTED_TEST_LIMIT     => 0,
+            Mandrill_OutboundModel::REJECTED_UNSIGNED       => 0,
+            Mandrill_OutboundModel::REJECTED_RULE           => 0,
+        ];
+
+        foreach ($totals as $rejectName => &$total) {
+            $total = $this->getCriteria(['rejectReason' => $rejectName])->count();
+        }
+
+        return $totals;
+    }
+
+    /**
      * Saves the outbound model into the database
      *
      * @param Mandrill_OutboundModel $model
@@ -116,8 +168,8 @@ class Mandrill_OutboundService extends AbstractMandrillService
      */
     public function getSyncList()
     {
-        $plugin = craft()->plugins->getPlugin('mandrill');
-        $date = $plugin->getSettings()->lastSyncDate;
+        $date = new DateTime();
+        $date->modify('-4 days');
 
         return $this->mandrill->messages->search('*', $date->format('Y-m-d'));
     }
