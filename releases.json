@@ -1,5 +1,13 @@
 [
   {
+    "version": "1.0.4",
+    "downloadUrl": "https://github.com/bertoost/Craft-CMS-Mandrill-Service/archive/1.0.3.zip",
+    "date": "2018-01-28T17:50:00+01:00",
+    "notes": [
+      "[Added] Support for Mandrill's message sent-at feature. Schedule messages."
+    ]
+  },
+  {
     "version": "1.0.3",
     "downloadUrl": "https://github.com/bertoost/Craft-CMS-Mandrill-Service/archive/1.0.3.zip",
     "date": "2018-01-07T18:20:00+01:00",
