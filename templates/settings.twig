@@ -55,14 +55,3 @@
     warning: (craft.config.mandrillFromEmail is defined ? configWarning('mandrillFromEmail')),
     errors: settings.getErrors('fromEmail')
 }) }}
-
-<hr>
-
-{{ forms.dateField({
-    id: 'lastSyncDateField',
-    name: 'lastSyncDate',
-    label: 'Last sync date'|t,
-    instructions: 'This is the last date of when the sync has been done. This one is internally used.'|t,
-    value: settings.lastSyncDate,
-    errors: settings.getErrors('lastSyncDate')
-}) }}
