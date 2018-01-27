@@ -26,6 +26,14 @@ class MandrillPlugin extends BasePlugin
     /**
      * {@inheritdoc}
      */
+    public function getSchemaVersion()
+    {
+        return '0.0.1';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDeveloper()
     {
         return 'Bert Oost';
@@ -53,6 +61,14 @@ class MandrillPlugin extends BasePlugin
     public function getReleaseFeedUrl()
     {
         return 'https://raw.githubusercontent.com/bertoost/Craft-CMS-Mandrill-Service/master/releases.json';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasCpSection()
+    {
+        return true;
     }
 
     /**
@@ -110,12 +126,23 @@ class MandrillPlugin extends BasePlugin
 
         if ($vendorPath !== false && file_exists($vendorPath . 'autoload.php')) {
             require_once $vendorPath . 'autoload.php';
+
             return true;
         }
 
         craft()->userSession->setError('Mandrill plugin failure: can\'t find Composer\'s vendor/ path!');
 
         return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function registerCpRoutes()
+    {
+        return [
+            'mandrill' => ['action' => 'mandrill/index'],
+        ];
     }
 
     /**
