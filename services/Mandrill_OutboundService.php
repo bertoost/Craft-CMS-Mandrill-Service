@@ -5,7 +5,7 @@ namespace Craft;
 /**
  * Class Mandrill_OutboundService
  */
-class Mandrill_OutboundService extends BaseApplicationComponent
+class Mandrill_OutboundService extends AbstractMandrillService
 {
     /**
      * Returns a criteria model for Mandrill_OutboundModel elements.
@@ -32,6 +32,20 @@ class Mandrill_OutboundService extends BaseApplicationComponent
     public function getById($id)
     {
         return $this->getCriteria(['limit' => 1, 'id' => $id])->first();
+    }
+
+    /**
+     *
+     * Get an outbound element model by id
+     *
+     * @param int $messageId
+     *
+     * @return Mandrill_OutboundModel|null
+     * @throws Exception
+     */
+    public function getByMessageId($messageId)
+    {
+        return $this->getCriteria(['limit' => 1, 'messageId' => $messageId])->first();
     }
 
     /**
@@ -95,5 +109,16 @@ class Mandrill_OutboundService extends BaseApplicationComponent
         }
 
         return false;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSyncList()
+    {
+        $plugin = craft()->plugins->getPlugin('mandrill');
+        $date = $plugin->getSettings()->lastSyncDate;
+
+        return $this->mandrill->messages->search('*', $date->format('Y-m-d'));
     }
 }
