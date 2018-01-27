@@ -175,6 +175,7 @@ class Mandrill_MessageModel extends BaseModel
             }
         }
 
+        $this->subject = $emailModel->subject;
         $this->text = $emailModel->body;
         $this->html = $emailModel->htmlBody;
 
