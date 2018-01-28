@@ -104,7 +104,9 @@ abstract class AbstractMandrillService extends BaseApplicationComponent
     }
 
     /**
-     * @return boolean
+     * @return bool
+     * @throws Exception
+     * @throws \Twig_Error_Runtime
      */
     public function send()
     {
@@ -133,13 +135,18 @@ abstract class AbstractMandrillService extends BaseApplicationComponent
 
                 // actually send message to mandrill
                 $sentAt = $this->getSentAt($event->params);
-                $result = $this->mandrill->messages->send($this->message->getAttributes(), false, null, $sentAt);
+                $result = $this->mandrill->messages->send($this->message->getAttributes(), false, null, $sentAt)[0];
+
+                // register a task to index the message
+                craft()->tasks->createTask('Mandrill_SingleMessageSync', null, [
+                    'messageId' => $result['_id'],
+                ]);
 
                 // capture errors
-                if (in_array($result[0]['status'], ['rejected', 'invalid'])) {
-                    $errorMsg = sprintf('Mandrill says: %s', $result[0]['status']);
-                    if (!empty($result[0]['reject_reason'])) {
-                        $errorMsg .= ' Reject reason: ' . $result[0]['reject_reason'];
+                if (in_array($result['status'], ['rejected', 'invalid'])) {
+                    $errorMsg = sprintf('Mandrill says: %s', $result['status']);
+                    if (!empty($result['reject_reason'])) {
+                        $errorMsg .= ' Reject reason: ' . $result['reject_reason'];
                     }
 
                     throw new \Exception($errorMsg);

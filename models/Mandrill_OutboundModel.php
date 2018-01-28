@@ -66,6 +66,22 @@ class Mandrill_OutboundModel extends BaseElementModel
     }
 
     /**
+     * Syncs the current instance with Mandrill information
+     *
+     * @return Mandrill_OutboundModel
+     */
+    public function syncWithMandrill()
+    {
+        if (!empty($this->messageId)) {
+
+            $item = craft()->mandrill_outbound->getMandrillMessageInfo($this->messageId);
+            $this->convertFromItem($item);
+        }
+
+        return $this;
+    }
+
+    /**
      * Converts a result item from Mandrill to our model
      *
      * @param array $item
@@ -83,6 +99,9 @@ class Mandrill_OutboundModel extends BaseElementModel
         switch ($item['state']) {
             case 'rejected':
                 $this->state = self::STATE_REJECTED;
+                if (isset($item['reject']['reason'])) {
+                    $this->rejectReason = $item['reject']['reason'];
+                }
                 break;
             case 'bounched':
                 $this->state = self::STATE_BOUNCED;

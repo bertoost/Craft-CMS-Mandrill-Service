@@ -164,6 +164,15 @@ class Mandrill_OutboundService extends AbstractMandrillService
     }
 
     /**
+     * @param string $messageId
+     * @return array
+     */
+    public function getMandrillMessageInfo($messageId)
+    {
+        return $this->mandrill->messages->info($messageId);
+    }
+
+    /**
      * @return array
      */
     public function getSyncList()
