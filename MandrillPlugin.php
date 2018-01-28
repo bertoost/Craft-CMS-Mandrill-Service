@@ -26,6 +26,14 @@ class MandrillPlugin extends BasePlugin
     /**
      * {@inheritdoc}
      */
+    public function getSchemaVersion()
+    {
+        return '0.0.2';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getDeveloper()
     {
         return 'Bert Oost';
@@ -58,6 +66,14 @@ class MandrillPlugin extends BasePlugin
     /**
      * {@inheritdoc}
      */
+    public function hasCpSection()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function init()
     {
         if (!$this->loadAutoload()) {
@@ -65,7 +81,7 @@ class MandrillPlugin extends BasePlugin
         }
 
         $settings = $this->getSettings();
-        $configEnabled = (boolean)craft()->config->get('mandrillEnabled');
+        $configEnabled = (boolean) craft()->config->get('mandrillEnabled');
 
         if ($settings->enabled || $configEnabled) {
 
@@ -110,6 +126,7 @@ class MandrillPlugin extends BasePlugin
 
         if ($vendorPath !== false && file_exists($vendorPath . 'autoload.php')) {
             require_once $vendorPath . 'autoload.php';
+
             return true;
         }
 
@@ -121,13 +138,27 @@ class MandrillPlugin extends BasePlugin
     /**
      * {@inheritdoc}
      */
+    public function registerCpRoutes()
+    {
+        return [
+            'mandrill' => [
+                'action' => 'mandrill/index',
+            ],
+            'mandrill/details/(?P<messageId>\d+)' => [
+                'action' => 'mandrill/details',
+            ],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function defineSettings()
     {
         return [
-            'enabled'   => AttributeType::Bool,
-            'apiKey'    => AttributeType::String,
-            'fromEmail' => AttributeType::String,
-            'fromName'  => [AttributeType::String, 'default' => craft()->getSiteName()],
+            'enabled'                     => AttributeType::Bool,
+            'apiKey'                      => AttributeType::String,
+            'immediatelyRegisterOutbound' => AttributeType::Bool,
         ];
     }
 

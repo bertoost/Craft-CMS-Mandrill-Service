@@ -22,6 +22,7 @@ This plugin provides the ability to send emails via Mandrill API. It also can co
     - [Add-in tags](#add-in-tags)
     - [Using attachments](#using-attachments)
     - [Set a schedule date/time](#set-a-schedule-datetime)
+- [Outbound view](#outbound-view)
 
 <!-- /TOC -->
 
@@ -298,3 +299,19 @@ craft()->on('email.onBeforeSendEmail', function (Event $event) {
     }
 });
 ```
+
+## Outbound view
+
+The plugin comes with a very cool overview where you can see the outbound of Mandrill. It shows you if messages are sent correctly and also gives you an inside when it failes or bounces. All of this can be found in Mandrill too of course.
+
+![Outbound page](resources/docs/screenshots/outbound-page-example.png "Outbound page")
+
+To enable this feature, you have to add a sync script to your cronjob system. This is the call you have to make (for example 1 to 4 times a day).
+
+```terminal
+php craft/app/etc/console/yiic mandrill syncOutbound
+```
+
+You can also use this command to sync it manually.
+
+__Note:__ This command scans Mandrill till 4 days in the past. Since bounces are being tried a couple of times.

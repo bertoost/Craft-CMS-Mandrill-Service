@@ -22,11 +22,9 @@ class Mandrill_MessageModel extends BaseModel
      */
     public function defineAttributes()
     {
-        $pluginSettings = craft()->plugins->getPlugin('mandrill')->getSettings();
-
         return array_merge(parent::defineAttributes(), [
-            'from_email'  => [AttributeType::String, 'default' => $pluginSettings->fromEmail, 'required' => true],
-            'from_name'   => [AttributeType::String, 'default' => $pluginSettings->fromName, 'required' => true],
+            'from_email'  => [AttributeType::String, 'required' => true],
+            'from_name'   => [AttributeType::String, 'required' => true],
             'subject'     => [AttributeType::String, 'required' => true],
             'text'        => [AttributeType::String, 'required' => true],
             'html'        => [AttributeType::String],
