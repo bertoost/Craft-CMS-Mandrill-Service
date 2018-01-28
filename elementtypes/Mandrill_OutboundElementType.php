@@ -29,9 +29,10 @@ class Mandrill_OutboundElementType extends BaseElementType
     public function getSources($context = null)
     {
         $sources = [
-            '*'   => [
-                'label' => Craft::t('All outbound'),
-            ]
+            '*' => [
+                'label'       => Craft::t('All outbound'),
+                'defaultSort' => ['messageTs', 'desc'],
+            ],
         ];
 
         $stateTotals = craft()->mandrill_outbound->getTotalStates();
@@ -52,10 +53,11 @@ class Mandrill_OutboundElementType extends BaseElementType
                         $rejectedTotals = craft()->mandrill_outbound->getRejectedTotals();
                         foreach ($rejectedTotals as $rejectName => $rejectedTotal) {
                             if ($rejectedTotal > 0) {
-                                $label = str_replace(['-','_'], ' ', $rejectName);
+                                $label = str_replace(['-', '_'], ' ', $rejectName);
                                 $nested[$rejectName] = [
-                                    'label'    => Craft::t(ucfirst($label)),
-                                    'criteria' => ['rejectReason' => $rejectName],
+                                    'label'       => Craft::t(ucfirst($label)),
+                                    'criteria'    => ['rejectReason' => $rejectName],
+                                    'defaultSort' => ['messageTs', 'desc'],
                                 ];
                             }
                         }
@@ -63,9 +65,10 @@ class Mandrill_OutboundElementType extends BaseElementType
 
                     $sources = array_merge($sources, [
                         $stateName => [
-                            'label'    => Craft::t(ucfirst($stateName) . ' messages'),
-                            'criteria' => ['state' => $stateName],
-                            'nested'   => $nested,
+                            'label'       => Craft::t(ucfirst($stateName) . ' messages'),
+                            'criteria'    => ['state' => $stateName],
+                            'nested'      => $nested,
+                            'defaultSort' => ['messageTs', 'desc'],
                         ],
                     ]);
                 }
@@ -73,6 +76,20 @@ class Mandrill_OutboundElementType extends BaseElementType
         }
 
         return $sources;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function defineSortableAttributes()
+    {
+        $attributes = [
+            'to'        => Craft::t('To'),
+            'subject'   => Craft::t('Subject'),
+            'messageTs' => Craft::t('Sent at'),
+        ];
+
+        return $attributes;
     }
 
     /**
@@ -86,6 +103,7 @@ class Mandrill_OutboundElementType extends BaseElementType
             'opens',
             'clicks',
             'state',
+            'messageTs',
         ];
 
         return $attributes;
@@ -117,6 +135,7 @@ class Mandrill_OutboundElementType extends BaseElementType
             'clicks'       => ['label' => Craft::t('Clicks')],
             'state'        => ['label' => Craft::t('State')],
             'rejectReason' => ['label' => Craft::t('Reject reason')],
+            'messageTs'    => ['label' => Craft::t('Sent at')],
         ];
 
         return $attributes;
@@ -129,6 +148,7 @@ class Mandrill_OutboundElementType extends BaseElementType
     {
         $query->addSelect('outbound.id,
                            outbound.messageId,
+                           outbound.messageTs,
                            outbound.sender,
                            outbound.subject,
                            outbound.to,
@@ -181,11 +201,18 @@ class Mandrill_OutboundElementType extends BaseElementType
                     $state = [$state, $element->rejectReason];
                 }
 
-                $contents = craft()->templates->render('mandrill/_formats/state', [
+                return craft()->templates->render('mandrill/_formats/state', [
                     'state' => $state,
                 ]);
+                break;
 
-                return $contents;
+            case 'messageTs':
+                $dateTime = new DateTime();
+                $dateTime->setTimestamp($element->messageTs);
+
+                return craft()->templates->render('mandrill/_formats/datetime', [
+                    'datetime' => $dateTime,
+                ]);
                 break;
         }
 
