@@ -151,10 +151,8 @@ class MandrillPlugin extends BasePlugin
     protected function defineSettings()
     {
         return [
-            'enabled'   => AttributeType::Bool,
-            'apiKey'    => AttributeType::String,
-            'fromEmail' => AttributeType::String,
-            'fromName'  => [AttributeType::String, 'default' => craft()->getSiteName()],
+            'enabled' => AttributeType::Bool,
+            'apiKey'  => AttributeType::String,
         ];
     }
 
