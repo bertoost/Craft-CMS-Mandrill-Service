@@ -35,3 +35,15 @@
             See documentation below for more information'|t }}
     </p>
 </div>
+
+<hr>
+
+{{ forms.lightswitchField({
+    label: 'Immediately register outbound'|t,
+    id: 'immediately-register-outbound-mandrill',
+    name: 'enabled',
+    name: 'enabled',
+    instructions: 'Whether or not to immediately register email after sending (done by a Craft task).'|t,
+    on: settings.immediatelyRegisterOutbound,
+    errors: settings.getErrors('immediatelyRegisterOutbound')
+}) }}

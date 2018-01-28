@@ -138,9 +138,12 @@ abstract class AbstractMandrillService extends BaseApplicationComponent
                 $result = $this->mandrill->messages->send($this->message->getAttributes(), false, null, $sentAt)[0];
 
                 // register a task to index the message
-                craft()->tasks->createTask('Mandrill_SingleMessageSync', null, [
-                    'messageId' => $result['_id'],
-                ]);
+                if ($this->config->immediatelyRegisterOutbound) {
+
+                    craft()->tasks->createTask('Mandrill_SingleMessageSync', null, [
+                        'messageId' => $result['_id'],
+                    ]);
+                }
 
                 // capture errors
                 if (in_array($result['status'], ['rejected', 'invalid'])) {

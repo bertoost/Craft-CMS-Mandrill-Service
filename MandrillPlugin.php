@@ -151,8 +151,9 @@ class MandrillPlugin extends BasePlugin
     protected function defineSettings()
     {
         return [
-            'enabled' => AttributeType::Bool,
-            'apiKey'  => AttributeType::String,
+            'enabled'                     => AttributeType::Bool,
+            'apiKey'                      => AttributeType::String,
+            'immediatelyRegisterOutbound' => AttributeType::Bool,
         ];
     }
 
