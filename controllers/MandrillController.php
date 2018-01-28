@@ -3,9 +3,9 @@
 namespace Craft;
 
 /**
- * Class Mandrill_IndexController
+ * Class MandrillController
  */
-class Mandrill_IndexController extends BaseController
+class MandrillController extends BaseController
 {
     /**
      * @throws HttpException
