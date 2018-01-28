@@ -20,7 +20,7 @@ class MandrillPlugin extends BasePlugin
      */
     public function getVersion()
     {
-        return '1.0.5';
+        return '1.1.0';
     }
 
     /**
@@ -28,7 +28,7 @@ class MandrillPlugin extends BasePlugin
      */
     public function getSchemaVersion()
     {
-        return '0.0.2';
+        return '1.0.0';
     }
 
     /**

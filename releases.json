@@ -1,5 +1,15 @@
 [
   {
+    "version": "1.1.0",
+    "downloadUrl": "https://github.com/bertoost/Craft-CMS-Mandrill-Service/archive/1.1.0.zip",
+    "date": "2018-01-28T15:35:00+01:00",
+    "notes": [
+      "[Added] Viewing message details in Craft UI.",
+      "[Added] User interface for reading outbound messages from Mandrill.",
+      "[Added] Console command for daily synchronizing the outbound."
+    ]
+  },
+  {
     "version": "1.0.5",
     "downloadUrl": "https://github.com/bertoost/Craft-CMS-Mandrill-Service/archive/1.0.5.zip",
     "date": "2018-01-28T00:45:00+01:00",
