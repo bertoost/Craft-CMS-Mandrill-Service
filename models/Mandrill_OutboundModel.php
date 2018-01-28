@@ -46,7 +46,7 @@ class Mandrill_OutboundModel extends BaseElementModel
         return array_merge(parent::defineAttributes(), [
             'id'           => AttributeType::Number,
             'messageId'    => AttributeType::String,
-            'messageTs'    => AttributeType::Number,
+            'messageTs'    => AttributeType::DateTime,
             'sender'       => AttributeType::String,
             'subject'      => AttributeType::String,
             'to'           => AttributeType::String,

@@ -22,7 +22,7 @@ class Mandrill_OutboundRecord extends BaseRecord
     {
         return [
             'messageId'    => [AttributeType::String, 'required' => true],
-            'messageTs'    => [AttributeType::Number, 'required' => true],
+            'messageTs'    => [AttributeType::DateTime, 'required' => true],
             'sender'       => [AttributeType::String, 'required' => false],
             'subject'      => [AttributeType::String, 'required' => false],
             'to'           => [AttributeType::String, 'required' => true],

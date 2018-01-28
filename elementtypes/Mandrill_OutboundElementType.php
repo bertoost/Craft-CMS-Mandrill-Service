@@ -207,11 +207,8 @@ class Mandrill_OutboundElementType extends BaseElementType
                 break;
 
             case 'messageTs':
-                $dateTime = new DateTime();
-                $dateTime->setTimestamp($element->messageTs);
-
                 return craft()->templates->render('mandrill/_formats/datetime', [
-                    'datetime' => $dateTime,
+                    'datetime' => $element->messageTs,
                 ]);
                 break;
         }
