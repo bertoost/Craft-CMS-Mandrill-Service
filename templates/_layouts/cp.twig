@@ -1,0 +1,3 @@
+{% extends (elementType is defined ? '_layouts/elementindex' : '_layouts/cp') %}
+
+{% set title = (title is defined) ? title : craft.mandrill.name %}

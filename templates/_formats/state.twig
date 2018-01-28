@@ -1,0 +1,11 @@
+{% if state is iterable %}
+    {% for stateName in state %}
+        <span class="message-state {{ stateName }}">
+            {{ stateName | ucfirst | t }}
+        </span>
+    {% endfor %}
+{% else %}
+    <span class="message-state {{ state }}">
+        {{ state | ucfirst | t }}
+    </span>
+{% endif %}

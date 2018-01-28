@@ -38,20 +38,12 @@
 
 <hr>
 
-{{ forms.textField({
-    label: 'From name'|t,
-    name: 'fromName',
-    instructions: 'The name recipients see when they receive your email. Defaults to your sites name.'|t,
-    value: settings.fromName,
-    warning: (craft.config.mandrillFromName is defined ? configWarning('mandrillFromName')),
-    errors: settings.getErrors('fromName')
-}) }}
-
-{{ forms.textField({
-    label: 'From email'|t,
-    name: 'fromEmail',
-    instructions: 'The emailaddress recipients see when they receive your email.'|t,
-    value: settings.fromEmail,
-    warning: (craft.config.mandrillFromEmail is defined ? configWarning('mandrillFromEmail')),
-    errors: settings.getErrors('fromEmail')
+{{ forms.lightswitchField({
+    label: 'Immediately register outbound'|t,
+    id: 'immediately-register-outbound-mandrill',
+    name: 'enabled',
+    name: 'enabled',
+    instructions: 'Whether or not to immediately register email after sending (done by a Craft task).'|t,
+    on: settings.immediatelyRegisterOutbound,
+    errors: settings.getErrors('immediatelyRegisterOutbound')
 }) }}

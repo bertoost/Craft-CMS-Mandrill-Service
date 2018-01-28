@@ -1,0 +1,33 @@
+.message-state {
+    font-size: 11px;
+    padding: 3px 8px;
+    margin-right: 2px;
+    border-radius: 4px;
+    background: #ccc;
+}
+.message-state.sent {
+    color: #fff;
+    background-color: #27AE60;
+}
+.message-state.spam,
+.message-state.custom,
+.message-state.invalid-sender,
+.message-state.unsub,
+.message-state.invalid,
+.message-state.test-mode-limit,
+.message-state.unsigned,
+.message-state.rule,
+.message-state.soft-bounce {
+    color: #fff;
+    background-color: #F2842D;
+}
+.message-state.rejected,
+.message-state.bounced,
+.message-state.hard-bounce {
+    color: #fff;
+    background-color: #D0021B;
+}
+.message-state.invalid {
+    color: #fff;
+    background-color: #98A3AE;
+}
