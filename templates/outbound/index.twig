@@ -1,3 +1,11 @@
 {% extends 'mandrill/_layouts/cp' %}
 
-{% set title = 'Mandrill Outbound'|t %}
+{% set title = (title is defined) ? title : 'Mandrill Outbound'|t %}
+
+{% set crumbs = [
+    { label: 'Mandrill Outbound'|t, url: url('mandrill') }
+] %}
+
+{% if breadcrumbs is defined %}
+    {% set crumbs = crumbs|merge(breadcrumbs) %}
+{% endif %}

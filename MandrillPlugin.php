@@ -141,7 +141,12 @@ class MandrillPlugin extends BasePlugin
     public function registerCpRoutes()
     {
         return [
-            'mandrill' => ['action' => 'mandrill/index'],
+            'mandrill' => [
+                'action' => 'mandrill/index',
+            ],
+            'mandrill/details/(?P<messageId>\d+)' => [
+                'action' => 'mandrill/details',
+            ],
         ];
     }
 

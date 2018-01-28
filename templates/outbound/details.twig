@@ -1,0 +1,96 @@
+{% extends 'mandrill/outbound/index' %}
+{% import "_includes/forms" as forms %}
+
+{% set title = 'Details for {email}'|t({ email: outboundModel.to }) %}
+
+{% set breadcrumbs = [
+    { label: 'Details'|t, url: url(outboundModel.getCpEditUrl) }
+] %}
+
+{% block main %}
+    <div class="grid first" data-max-cols="3">
+        <div class="item" data-position="left" data-colspan="2">
+            <div id="fields" class="pane">
+
+                {{ forms.textField({
+                    label: 'Subject'|t,
+                    value: outboundModel.subject
+                }) }}
+
+                {% if messageContent is defined %}
+                    {{ forms.textareaField({
+                        label: 'Content (plain text version)'|t,
+                        value: messageContent.text,
+                        rows: (messageContent.text|split("\n")|length + 2)
+                    }) }}
+
+                    {{ forms.textField({
+                        label: 'From name'|t,
+                        value: messageContent.from_name
+                    }) }}
+
+                    {{ forms.textField({
+                        label: 'From email'|t,
+                        value: messageContent.from_email
+                    }) }}
+                {% endif %}
+
+                {% if outboundModel.state == constant('Craft\\Mandrill_OutboundModel::STATE_REJECTED') %}
+                    <p class="error">
+                        {{ 'This message was rejected by Mandrill. The reason: {reason}'|t({
+                            reason: outboundModel.rejectReason
+                        }) }}
+                    </p>
+                {% endif %}
+
+            </div>
+        </div>
+
+        <div class="item" data-position="right">
+            <div id="settings" class="pane lightpane meta">
+
+                <div class="data">
+                    <h5 class="heading">{{ 'Message ID'|t }}</h5>
+                    <p class="value">
+                        {{ outboundModel.messageId }}
+                    </p>
+                </div>
+
+                <div class="data">
+                    <h5 class="heading">{{ 'State'|t }}</h5>
+                    <p class="value">
+                        {% include 'mandrill/_formats/state' with { state: outboundModel.state } only %}
+                    </p>
+                </div>
+
+                <div class="data">
+                    <h5 class="heading">{{ 'Sent date'|t }}</h5>
+                    <p class="value">
+                        {% include 'mandrill/_formats/datetime' with { datetime: outboundModel.messageTs } only %}
+                    </p>
+                </div>
+
+                <div class="data">
+                    <h5 class="heading">{{ '# of Opens'|t }}</h5>
+                    <p class="value">
+                        {{ outboundModel.opens }}
+                    </p>
+                </div>
+
+                <div class="data">
+                    <h5 class="heading">{{ '# of Clicks'|t }}</h5>
+                    <p class="value">
+                        {{ outboundModel.clicks }}
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% set mandrillViewJs %}
+    $("input,select,textarea").attr('disabled', true).attr('readonly', true);
+{% endset %}
+
+{% includeJs mandrillViewJs %}
