@@ -21,7 +21,6 @@
     label: 'Enable Mandrill as service'|t,
     id: 'enabled-mandrill',
     name: 'enabled',
-    name: 'enabled',
     instructions: 'Whether or not to use Mandrill as sending provider for all emails send by Craft\'s email-service.'|t,
     on: settings.enabled,
     warning: (craft.config.mandrillEnabled is defined ? configWarning('mandrillEnabled')),
@@ -41,8 +40,7 @@
 {{ forms.lightswitchField({
     label: 'Immediately register outbound'|t,
     id: 'immediately-register-outbound-mandrill',
-    name: 'enabled',
-    name: 'enabled',
+    name: 'immediatelyRegisterOutbound',
     instructions: 'Whether or not to immediately register email after sending (done by a Craft task).'|t,
     on: settings.immediatelyRegisterOutbound,
     errors: settings.getErrors('immediatelyRegisterOutbound')

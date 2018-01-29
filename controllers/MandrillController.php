@@ -61,4 +61,38 @@ class MandrillController extends BaseController
 
         $this->renderTemplate('mandrill/outbound/details', $variables);
     }
+
+    /**
+     * @param array $variables
+     * @return void
+     */
+    public function actionDetailsHtmlView(array $variables = [])
+    {
+        $messageId = (isset($variables['messageId'])) ? $variables['messageId'] : null;
+        if (empty($messageId)) {
+            craft()->userSession->setError(Craft::t(sprintf('No message with ID "%d" found.', $messageId)));
+            $this->redirect('mandrill');
+        }
+
+        $outboundModel = craft()->mandrill_outbound->getById($messageId);
+        if (empty($outboundModel) || !($outboundModel instanceof Mandrill_OutboundModel)) {
+            craft()->userSession->setError(Craft::t(sprintf('No record with ID "%d" found.', $messageId)));
+            $this->redirect('mandrill');
+        }
+        $variables['outboundModel'] = $outboundModel;
+
+        // only valid items have details
+        if (!in_array($outboundModel->state, [
+            Mandrill_OutboundModel::STATE_REJECTED,
+            Mandrill_OutboundModel::STATE_INVALID,
+        ])) {
+
+            $messageContent = craft()->mandrill_outbound->getMandrillMessageContent($outboundModel->messageId);
+            if (isset($messageContent['html']) && !empty($messageContent['html'])) {
+
+                echo $messageContent['html'];
+                craft()->end();
+            }
+        }
+    }
 }
