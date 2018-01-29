@@ -14,25 +14,46 @@
 
                 {{ forms.textField({
                     label: 'Subject'|t,
+                    instructions: 'Subject'|t,
                     value: outboundModel.subject
                 }) }}
 
                 {% if messageContent is defined %}
-                    {{ forms.textareaField({
-                        label: 'Content (plain text version)'|t,
-                        value: messageContent.text,
-                        rows: (messageContent.text|split("\n")|length + 2)
-                    }) }}
+                    {% if messageContent.html is defined %}
+                        <div class="field">
+                            <div class="heading">
+                                <label>{{ 'Content (html version)'|t }}</label>
+                                <div class="instructions">
+                                    <p>{{ 'This will be loaded in a iframe to let it not be affected by any Craft CMS CSS styling.'|t }}</p>
+                                </div>
+                            </div>
+                            <div class="input ltr">
+                                <iframe src="{{ url('mandrill/details/' ~ outboundModel.id ~ '/html') }}" frameborder="0" style="width:100%;height:{{ ((messageContent.html|split("\n")|length + 2) * 24) }}px;"></iframe>
+                            </div>
+                        </div>
+                    {% endif %}
 
-                    {{ forms.textField({
-                        label: 'From name'|t,
-                        value: messageContent.from_name
-                    }) }}
+                    {% if messageContent.text is defined %}
+                        {{ forms.textareaField({
+                            label: 'Content (plain text version)'|t,
+                            value: messageContent.text,
+                            rows: (messageContent.text|split("\n")|length + 2)
+                        }) }}
+                    {% endif %}
 
-                    {{ forms.textField({
-                        label: 'From email'|t,
-                        value: messageContent.from_email
-                    }) }}
+                    {% if messageContent.from_name is defined %}
+                        {{ forms.textField({
+                            label: 'From name'|t,
+                            value: messageContent.from_name
+                        }) }}
+                    {% endif %}
+
+                    {% if messageContent.from_name is defined %}
+                        {{ forms.textField({
+                            label: 'From email'|t,
+                            value: messageContent.from_email
+                        }) }}
+                    {% endif %}
                 {% endif %}
 
                 {% if outboundModel.state == constant('Craft\\Mandrill_OutboundModel::STATE_REJECTED') %}
