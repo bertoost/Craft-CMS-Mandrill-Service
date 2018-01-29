@@ -1,5 +1,14 @@
 [
   {
+    "version": "1.1.1",
+    "downloadUrl": "https://github.com/bertoost/Craft-CMS-Mandrill-Service/archive/1.1.1.zip",
+    "date": "2018-01-29T15:00:00+01:00",
+    "notes": [
+      "[Fixed] Viewing outbound message details when having HTML only.",
+      "[Fixed] Settings to activate outbound registration on send correctly."
+    ]
+  },
+  {
     "version": "1.1.0",
     "downloadUrl": "https://github.com/bertoost/Craft-CMS-Mandrill-Service/archive/1.1.0.zip",
     "date": "2018-01-28T15:35:00+01:00",
