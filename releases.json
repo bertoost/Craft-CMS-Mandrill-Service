@@ -4,6 +4,7 @@
     "downloadUrl": "https://github.com/bertoost/Craft-CMS-Mandrill-Service/archive/1.1.2.zip",
     "date": "2018-05-25T21:55:00+02:00",
     "notes": [
+      "[Fixed] Adding attachments by file path (Mandrill's message model was not getting them).",
       "[Improved] Report succeeded sent state back to Craft's Email Service (works from a future release, [click here](https://github.com/craftcms/cms/pull/2917) )."
     ]
   },

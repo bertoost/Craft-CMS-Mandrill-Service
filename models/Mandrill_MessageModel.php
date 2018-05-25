@@ -7,12 +7,24 @@ namespace Craft;
  */
 class Mandrill_MessageModel extends BaseModel
 {
+    /**
+     * @var array
+     */
     private $recipientList = [];
 
+    /**
+     * @var array
+     */
     private $attachmentList = [];
 
+    /**
+     * @var array
+     */
     private $imageList = [];
 
+    /**
+     * @var array
+     */
     private $tagList = [];
 
     /**
@@ -170,6 +182,15 @@ class Mandrill_MessageModel extends BaseModel
         if (!empty($emailModel->stringAttachments)) {
             foreach ($emailModel->stringAttachments as $attachment) {
                 $this->addAttachment($attachment['fileName'], $attachment['string'], $attachment['type']);
+            }
+        }
+
+        if (!empty($emailModel->attachments)) {
+            foreach ($emailModel->attachments as $attachment) {
+                if (IOHelper::fileExists($attachment['path'])) {
+                    $contents = IOHelper::getFileContents($attachment['path']);
+                    $this->addAttachment($attachment['name'], $contents, $attachment['type']);
+                }
             }
         }
 
