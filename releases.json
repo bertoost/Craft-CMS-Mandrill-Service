@@ -1,5 +1,13 @@
 [
   {
+    "version": "1.1.2",
+    "downloadUrl": "https://github.com/bertoost/Craft-CMS-Mandrill-Service/archive/1.1.2.zip",
+    "date": "2018-05-25T21:55:00+02:00",
+    "notes": [
+      "[Improved] Report succeeded sent state back to Craft's Email Service (works from a future release, [click here](https://github.com/craftcms/cms/pull/2917) )."
+    ]
+  },
+  {
     "version": "1.1.1",
     "downloadUrl": "https://github.com/bertoost/Craft-CMS-Mandrill-Service/archive/1.1.1.zip",
     "date": "2018-01-29T15:00:00+01:00",

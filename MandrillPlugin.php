@@ -90,11 +90,14 @@ class MandrillPlugin extends BasePlugin
                 // when not coming from our self
                 if (!isset($event->params['_mandrill'])) {
 
-                    craft()->mandrill
+                    $sent = craft()->mandrill
                         ->setEmailModel($event->params['emailModel'])
                         ->setUser($event->params['user'])
                         ->setContentVariables($event->params['variables'])
                         ->send();
+
+                    // store sent state for Craft 
+                    $event->params['sent'] = $sent;
 
                     // stop any 'normal' mail from being send by Craft
                     $event->performAction = false;
