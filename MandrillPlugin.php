@@ -81,9 +81,9 @@ class MandrillPlugin extends BasePlugin
         }
 
         $settings = $this->getSettings();
-        $configEnabled = (boolean) craft()->config->get('mandrillEnabled');
+        $configEnabled = (craft()->config->hasProperty('mandrillEnabled') ? (boolean) craft()->config->get('mandrillEnabled') : null);
 
-        if ($settings->enabled || $configEnabled) {
+        if ($settings->enabled && ((null !== $configEnabled && $configEnabled) || null === $configEnabled)) {
 
             craft()->on('email.onBeforeSendEmail', function (Event $event) {
 
