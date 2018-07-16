@@ -1,5 +1,15 @@
 [
   {
+    "version": "1.1.3",
+    "downloadUrl": "https://github.com/bertoost/Craft-CMS-Mandrill-Service/archive/1.1.3.zip",
+    "date": "2018-07-16T21:55:00+02:00",
+    "notes": [
+      "[Improved] Continue sending email via Craft if Mandrill sent is failed.",
+      "[Fixed] Checking general config setting 'mandrillEnabled' is set, and set correctly.",
+      "[Fixed] Setting text mail version correctly based on given EmailModel."
+    ]
+  },
+  {
     "version": "1.1.2",
     "downloadUrl": "https://github.com/bertoost/Craft-CMS-Mandrill-Service/archive/1.1.2.zip",
     "date": "2018-05-25T21:55:00+02:00",

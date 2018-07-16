@@ -20,7 +20,7 @@ class MandrillPlugin extends BasePlugin
      */
     public function getVersion()
     {
-        return '1.1.2';
+        return '1.1.3';
     }
 
     /**
@@ -81,9 +81,9 @@ class MandrillPlugin extends BasePlugin
         }
 
         $settings = $this->getSettings();
-        $configEnabled = (boolean) craft()->config->get('mandrillEnabled');
+        $configEnabled = (craft()->config->hasProperty('mandrillEnabled') ? (boolean) craft()->config->get('mandrillEnabled') : null);
 
-        if ($settings->enabled || $configEnabled) {
+        if ($settings->enabled && ((null !== $configEnabled && $configEnabled) || null === $configEnabled)) {
 
             craft()->on('email.onBeforeSendEmail', function (Event $event) {
 
@@ -99,8 +99,10 @@ class MandrillPlugin extends BasePlugin
                     // store sent state for Craft 
                     $event->params['sent'] = $sent;
 
-                    // stop any 'normal' mail from being send by Craft
-                    $event->performAction = false;
+                    // stop any 'normal' mail from being send by Craft when succeeded
+                    if ($sent) {
+                        $event->performAction = false;
+                    }
                 }
             });
         }

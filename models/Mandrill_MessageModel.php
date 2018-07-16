@@ -195,8 +195,28 @@ class Mandrill_MessageModel extends BaseModel
         }
 
         $this->subject = $emailModel->subject;
-        $this->text = $emailModel->body;
-        $this->html = $emailModel->htmlBody;
+
+        $hasBody = (integer)!empty($emailModel->body);
+        $hasHTMLBody = (integer)!empty($emailModel->htmlBody);
+        $msgState = ((string)$hasBody . (string)$hasHTMLBody);
+
+        switch ($msgState) {
+            case '10': // text only
+                $this->text = $emailModel->body;
+                $this->html = nl2br($emailModel->body);
+                break;
+
+            case '01': // html only
+                $text = preg_replace("/\n\s+/", "\n", rtrim(html_entity_decode(strip_tags($emailModel->htmlBody))));
+                $this->text = $text;
+                $this->html = $emailModel->htmlBody;
+                break;
+
+            case '11': // both
+                $this->text = $emailModel->body;
+                $this->html = $emailModel->htmlBody;
+                break;
+        }
 
         return $this;
     }
