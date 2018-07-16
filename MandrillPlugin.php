@@ -99,8 +99,10 @@ class MandrillPlugin extends BasePlugin
                     // store sent state for Craft 
                     $event->params['sent'] = $sent;
 
-                    // stop any 'normal' mail from being send by Craft
-                    $event->performAction = false;
+                    // stop any 'normal' mail from being send by Craft when succeeded
+                    if ($sent) {
+                        $event->performAction = false;
+                    }
                 }
             });
         }
