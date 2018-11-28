@@ -31,7 +31,7 @@ This plugin provides the ability to send emails via Mandrill API. It also can co
 From the root of your Craft installation, just run composer to install this plugin;
 
 ```terminal
-composer require bertoost/craft-mandrill-service-plguin
+composer require bertoost/craft-mandrill-service-plugin
 ```
 
 This will install the plugin inside your `craft/plugins/` folder automatically.
